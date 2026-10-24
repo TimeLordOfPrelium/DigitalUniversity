@@ -27,10 +27,22 @@ public class CourseOffer {
      
     public void AssignAsTeacher(FacultyProfile fp) {
 
-        facultyassignment = new FacultyAssignment(fp, this);
+        unassignTeacher();
+        facultyassignment = fp.AssignAsTeacher(this); //keeps the faculty side of the link in sync
+    }
+
+    public void unassignTeacher() {
+        if (facultyassignment == null) {
+            return;
+        }
+        facultyassignment.getFacultyProfile().removeAssignment(facultyassignment);
+        facultyassignment = null;
     }
 
     public FacultyProfile getFacultyProfile() {
+        if (facultyassignment == null) {
+            return null; //no teacher assigned yet
+        }
         return facultyassignment.getFacultyProfile();
     }
 
@@ -88,6 +100,20 @@ public class CourseOffer {
     }
     public int getCreditHours(){
         return course.getCredits();
+    }
+
+    public ArrayList<Seat> getSeatList(){
+        return seatlist;
+    }
+
+    public int getEnrolledCount(){
+        int count = 0;
+        for (Seat s : seatlist) {
+            if (s.isOccupied()) {
+                count++;
+            }
+        }
+        return count;
     }
 
 }

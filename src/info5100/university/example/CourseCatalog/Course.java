@@ -34,7 +34,16 @@ public class Course {
 
     public int getCredits() {
         return credits;
-    
+
 }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return number + " " + name;
+    }
+
 }

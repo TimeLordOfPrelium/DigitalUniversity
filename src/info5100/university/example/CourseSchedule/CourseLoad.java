@@ -45,5 +45,30 @@ public class CourseLoad {
         public ArrayList<SeatAssignment> getSeatAssignments(){
             return seatassignments;
         }
-            
+
+    public String getSemester(){
+        return semester;
+    }
+
+    public int getTotalCreditHours(){
+        int sum = 0;
+        for (SeatAssignment sa: seatassignments){
+            sum = sum + sa.getCreditHours();
+        }
+        return sum;
+    }
+
+    //drops a class: frees the seat in the course offer and removes it from this load
+    public void dropSeatAssignment(SeatAssignment sa){
+        sa.getSeat().release();
+        seatassignments.remove(sa);
+    }
+
+    //drops every class in this load (used when a student record is deleted)
+    public void dropAll(){
+        for (SeatAssignment sa: new ArrayList<>(seatassignments)){
+            dropSeatAssignment(sa);
+        }
+    }
+
 }

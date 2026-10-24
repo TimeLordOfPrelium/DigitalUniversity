@@ -55,5 +55,17 @@ public class FacultyDirectory {
         }
             return null; //not found after going through the whole list
          }
-    
+
+    public ArrayList<FacultyProfile> getTeacherList() {
+        return teacherlist;
+    }
+
+    //removes the faculty member and unassigns them from every course they teach
+    public void removeFaculty(FacultyProfile fp) {
+        for (FacultyAssignment fa : new ArrayList<>(fp.getFacultyAssignments())) {
+            fa.getCourseOffer().unassignTeacher();
+        }
+        teacherlist.remove(fp);
+    }
+
 }

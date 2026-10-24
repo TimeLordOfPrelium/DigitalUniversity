@@ -41,5 +41,15 @@ public class StudentDirectory {
         }
             return null; //not found after going through the whole list
          }
-    
+
+    public ArrayList<StudentProfile> getStudentList() {
+        return studentlist;
+    }
+
+    //removes the student and frees every seat they hold
+    public void removeStudent(StudentProfile sp) {
+        sp.getTranscript().dropAllClasses();
+        studentlist.remove(sp);
+    }
+
 }

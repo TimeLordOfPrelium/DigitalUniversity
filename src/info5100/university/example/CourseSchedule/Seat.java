@@ -38,4 +38,12 @@ public class Seat {
     public int getCourseCredits(){
         return courseoffer.getCreditHours();
     }
+    public SeatAssignment getSeatAssignment(){
+        return seatassignment;
+    }
+    //frees the seat so another student can take it (used when a student drops or is deleted)
+    public void release(){
+        seatassignment = null;
+        occupied = false;
+    }
 }

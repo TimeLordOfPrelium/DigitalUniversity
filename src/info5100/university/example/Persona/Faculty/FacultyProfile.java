@@ -34,7 +34,9 @@ public class FacultyProfile {
             
         }
         //divide by the total number of faculty assignments
-        
+        if (facultyassignments.isEmpty()) {
+            return 0.0; //no teaching assignments yet, avoid dividing by zero
+        }
         return sum/(facultyassignments.size()*1.0); //this ensure we have double/double
         
     }
@@ -49,6 +51,18 @@ public class FacultyProfile {
     
     public FacultyProfile getCourseOffer(String courseid){
         return null; //complete it later
+    }
+
+    public ArrayList<FacultyAssignment> getFacultyAssignments(){
+        return facultyassignments;
+    }
+
+    public void removeAssignment(FacultyAssignment fa){
+        facultyassignments.remove(fa);
+    }
+
+    public Person getPerson(){
+        return person;
     }
 
     public boolean isMatch(String id) {

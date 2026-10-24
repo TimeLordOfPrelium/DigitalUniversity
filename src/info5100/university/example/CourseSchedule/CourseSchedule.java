@@ -48,6 +48,14 @@ public class CourseSchedule {
         return null;
     }
 
+    public String getSemester() {
+        return semester;
+    }
+
+    public ArrayList<CourseOffer> getSchedule() {
+        return schedule;
+    }
+
     public int calculateTotalRevenues() {
         int sum = 0;
         for (CourseOffer co : schedule) {

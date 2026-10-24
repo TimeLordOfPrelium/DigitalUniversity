@@ -8,6 +8,7 @@ package info5100.university.example.Persona;
 import info5100.university.example.CourseSchedule.CourseLoad;
 import info5100.university.example.CourseSchedule.SeatAssignment;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -89,6 +90,40 @@ public class Transcript {
 
         return temp2;
 
+    }
+
+    public Collection<CourseLoad> getCourseLoads() {
+        return courseloadlist.values();
+    }
+
+    public int getTotalCreditHours() {
+        int sum = 0;
+        for (CourseLoad cl : courseloadlist.values()) {
+            sum = sum + cl.getTotalCreditHours();
+        }
+        return sum;
+    }
+
+    //grade point average weighted by credit hours; in-progress (ungraded) classes do not count
+    public float getGPA() {
+        float points = 0;
+        int credits = 0;
+        for (SeatAssignment sa : getCourseList()) {
+            if (sa.getGrade() > 0) {
+                points = points + sa.GetCourseStudentScore();
+                credits = credits + sa.getCreditHours();
+            }
+        }
+        if (credits == 0) {
+            return 0;
+        }
+        return points / credits;
+    }
+
+    public void dropAllClasses() {
+        for (CourseLoad cl : courseloadlist.values()) {
+            cl.dropAll();
+        }
     }
 
 }
