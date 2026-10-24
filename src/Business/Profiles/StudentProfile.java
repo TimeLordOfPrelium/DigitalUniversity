@@ -13,15 +13,12 @@ import Business.Person.Person;
  */
 public class StudentProfile extends Profile {
 
-    Person person;
-//    Transcript transcript;
-    //   EmploymentHistroy employmenthistory;
+    //the academic side of the student (transcript, course loads) lives in the university model
+    info5100.university.example.Persona.StudentProfile academicprofile;
 
-    public StudentProfile(Person p) {
+    public StudentProfile(Person p, info5100.university.example.Persona.StudentProfile ap) {
         super(p);
-
-//        transcript = new Transcript(this);
-//        employmenthistory = new EmploymentHistroy();
+        academicprofile = ap;
     }
 
     @Override
@@ -29,8 +26,8 @@ public class StudentProfile extends Profile {
         return "Student";
     }
 
-    public boolean isMatch(String id) {
-        return person.getPersonId().equals(id);
+    public info5100.university.example.Persona.StudentProfile getAcademicProfile() {
+        return academicprofile;
     }
 
 }

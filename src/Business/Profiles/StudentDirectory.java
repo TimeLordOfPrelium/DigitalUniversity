@@ -24,9 +24,9 @@ public class StudentDirectory {
 
     }
 
-    public StudentProfile newStudentProfile(Person p) {
+    public StudentProfile newStudentProfile(Person p, info5100.university.example.Persona.StudentProfile ap) {
 
-        StudentProfile sp = new StudentProfile(p);
+        StudentProfile sp = new StudentProfile(p, ap);
         studentlist.add(sp);
         return sp;
     }
@@ -41,5 +41,13 @@ public class StudentDirectory {
         }
             return null; //not found after going through the whole list
          }
-    
+
+    public ArrayList<StudentProfile> getStudentList() {
+        return studentlist;
+    }
+
+    public void removeStudent(StudentProfile sp) {
+        studentlist.remove(sp);
+    }
+
 }
