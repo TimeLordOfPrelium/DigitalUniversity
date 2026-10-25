@@ -10,7 +10,10 @@
  */
 package UserInterface.WorkAreas.AdminRole;
 
+import Business.AccessControl.Feature;
 import Business.Business;
+import Business.UserAccounts.UserAccount;
+import UserInterface.AccessGuard;
 import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUserAccountsJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
 
@@ -24,14 +27,16 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
 
     javax.swing.JPanel CardSequencePanel;
     Business business;
+    UserAccount useraccount; //the logged-in admin
 
     /**
      * Creates new form UnitRiskWorkArea
      */
 
-    public AdminRoleWorkAreaJPanel(Business b, JPanel clp) {
+    public AdminRoleWorkAreaJPanel(Business b, UserAccount ua, JPanel clp) {
 
         business = b;
+        useraccount = ua;
         this.CardSequencePanel = clp;
         initComponents();
 
@@ -160,7 +165,9 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4IdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4IdentifyResourceAssetsActionPerformed
-        // TODO add your handling code here:
+        if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_USER_ACCOUNTS)) {
+            return;
+        }
 
         ManageUserAccountsJPanel aos = new ManageUserAccountsJPanel(business, CardSequencePanel);
 
@@ -170,7 +177,9 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
+        if (!AccessGuard.allow(this, useraccount, Feature.REGISTER_PERSONS)) {
+            return;
+        }
 
         ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
 
@@ -180,14 +189,24 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-
+        if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_STUDENT_RECORDS)) {
+            return;
+        }
+        AccessGuard.comingSoon(this, Feature.MANAGE_STUDENT_RECORDS);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6IdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6IdentifyEventsActionPerformed
+        if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_OWN_PROFILE)) {
+            return;
+        }
+        AccessGuard.comingSoon(this, Feature.MANAGE_OWN_PROFILE);
     }//GEN-LAST:event_jButton6IdentifyEventsActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_FACULTY_RECORDS)) {
+            return;
+        }
+        AccessGuard.comingSoon(this, Feature.MANAGE_FACULTY_RECORDS);
     }//GEN-LAST:event_jButton9ActionPerformed
 
 

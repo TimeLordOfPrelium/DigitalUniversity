@@ -10,8 +10,11 @@
  */
 package UserInterface.WorkAreas.FacultyRole;
 
+import Business.AccessControl.Feature;
 import Business.Business;
-import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+import Business.Profiles.FacultyProfile;
+import Business.UserAccounts.UserAccount;
+import UserInterface.AccessGuard;
 import javax.swing.JPanel;
 
 /**
@@ -22,18 +25,27 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
 
     javax.swing.JPanel CardSequencePanel;
     Business business;
+    UserAccount useraccount;    //the logged-in faculty member
+    FacultyProfile faculty;     //faculty.getAcademicProfile() gives the teaching assignments
 
     /**
      * Creates new form UnitRiskWorkArea
      */
 
-    public FacultyWorkAreaJPanel(Business b, JPanel clp) {
+    public FacultyWorkAreaJPanel(Business b, UserAccount ua, JPanel clp) {
 
         business = b;
+        useraccount = ua;
+        faculty = (FacultyProfile) ua.getAssociatedPersonProfile();
         this.CardSequencePanel = clp;
         initComponents();
+        jLabel1.setText("Welcome, " + faculty.getPerson().getFullName());
 
     }
+
+    // Faculty use case: each button below checks access first, then opens its screen.
+    // Replace AccessGuard.comingSoon(...) with the screen, using the same pattern as the
+    // Admin work area: CardSequencePanel.add(...) then CardLayout.next(...).
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,35 +160,32 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4IdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4IdentifyResourceAssetsActionPerformed
-        // TODO add your handling code here:
-        CardSequencePanel.removeAll();
-
-        ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
-
-        CardSequencePanel.add("Manage Persons", aos);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_COURSES)) {
+            return;
+        }
+        AccessGuard.comingSoon(this, Feature.MANAGE_COURSES);
 
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-
-  
+        if (!AccessGuard.allow(this, useraccount, Feature.VIEW_STUDENT_PROFILES)) {
+            return;
+        }
+        AccessGuard.comingSoon(this, Feature.VIEW_STUDENT_PROFILES);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton6IdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6IdentifyEventsActionPerformed
-        // TODO add your handling code here:
-        CardSequencePanel.removeAll();
-        //    IdentifyEventTypes iet= new IdentifyEventTypes(businessunit, CardSequencePanel);
-
-        //    CardSequencePanel.add("IdentifyEventTypes", iet);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-        //((java.awt.CardLayout)CardSequencePanel.getLayout()).show(CardSequencePanel, "IdentifyEventTypes");
+        if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_OWN_PROFILE)) {
+            return;
+        }
+        AccessGuard.comingSoon(this, Feature.MANAGE_OWN_PROFILE);
 }//GEN-LAST:event_jButton6IdentifyEventsActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-
+        if (!AccessGuard.allow(this, useraccount, Feature.PERFORMANCE_REPORTS)) {
+            return;
+        }
+        AccessGuard.comingSoon(this, Feature.PERFORMANCE_REPORTS);
 }//GEN-LAST:event_jButton11ActionPerformed
 
 

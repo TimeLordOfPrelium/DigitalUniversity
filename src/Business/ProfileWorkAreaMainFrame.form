@@ -59,6 +59,8 @@
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <Component id="PasswordTextField" min="-2" pref="130" max="-2" attributes="0"/>
                           <Component id="jButton1" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Component id="LogoutButton" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Component id="SignedInLabel" min="-2" pref="180" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -76,6 +78,10 @@
                       <Component id="PasswordTextField" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="16" pref="16" max="-2" attributes="0"/>
                       <Component id="jButton1" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                      <Component id="LogoutButton" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="16" pref="16" max="-2" attributes="0"/>
+                      <Component id="SignedInLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -105,6 +111,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Password"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="LogoutButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Logout"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LogoutButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="SignedInLabel">
             </Component>
           </SubComponents>
         </Container>

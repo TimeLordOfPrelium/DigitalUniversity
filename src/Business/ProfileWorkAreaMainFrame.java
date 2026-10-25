@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
     Business business;
+    UserAccount currentuser; //null while nobody is logged in
 
     /**
      * Creates new form PricingMainFrame
@@ -58,6 +59,8 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         UserNameTextField = new javax.swing.JTextField();
         PasswordTextField = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
+        LogoutButton = new javax.swing.JButton();
+        SignedInLabel = new javax.swing.JLabel();
         CardSequencePanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -84,6 +87,14 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Password");
 
+        LogoutButton.setText("Logout");
+        LogoutButton.setEnabled(false);
+        LogoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogoutButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout actionsidejpanelLayout = new javax.swing.GroupLayout(actionsidejpanel);
         actionsidejpanel.setLayout(actionsidejpanelLayout);
         actionsidejpanelLayout.setHorizontalGroup(
@@ -95,7 +106,9 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
                     .addComponent(UserNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(PasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LogoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SignedInLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         actionsidejpanelLayout.setVerticalGroup(
             actionsidejpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,7 +122,11 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(PasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(LogoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(SignedInLabel))
         );
 
         SplitHomeArea.setLeftComponent(actionsidejpanel);
@@ -160,6 +177,8 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         }
 
         useraccount.recordLogin();
+        currentuser = useraccount;
+        setLoggedIn(true);
         CardSequencePanel.removeAll();
         CardSequencePanel.add("workarea", workarea);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
@@ -174,15 +193,46 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         Profile profile = useraccount.getAssociatedPersonProfile();
 
         if (profile instanceof EmployeeProfile) {
-            return new AdminRoleWorkAreaJPanel(business, CardSequencePanel);
+            return new AdminRoleWorkAreaJPanel(business, useraccount, CardSequencePanel);
         }
         if (profile instanceof FacultyProfile) {
-            return new FacultyWorkAreaJPanel(business, CardSequencePanel);
+            return new FacultyWorkAreaJPanel(business, useraccount, CardSequencePanel);
         }
         if (profile instanceof StudentProfile) {
-            return new StudentWorkAreaJPanel(business, (StudentProfile) profile, CardSequencePanel);
+            return new StudentWorkAreaJPanel(business, useraccount, CardSequencePanel);
         }
         return null;
+    }
+
+    private void LogoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutButtonActionPerformed
+        //drop every open screen and go back to the welcome card
+        currentuser = null;
+        CardSequencePanel.removeAll();
+        CardSequencePanel.add(jLabel3, "card2");
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).show(CardSequencePanel, "card2");
+        CardSequencePanel.revalidate();
+        CardSequencePanel.repaint();
+
+        setLoggedIn(false);
+        UserNameTextField.setText("");
+        PasswordTextField.setText("");
+        UserNameTextField.requestFocusInWindow();
+    }//GEN-LAST:event_LogoutButtonActionPerformed
+
+    //while someone is logged in the login fields are locked and only Logout is available
+    private void setLoggedIn(boolean loggedin) {
+
+        UserNameTextField.setEnabled(!loggedin);
+        PasswordTextField.setEnabled(!loggedin);
+        jButton1.setEnabled(!loggedin);
+        LogoutButton.setEnabled(loggedin);
+
+        if (loggedin) {
+            SignedInLabel.setText("<html>Signed in as<br>" + currentuser.getAssociatedPersonProfile().getPerson().getFullName()
+                    + " (" + currentuser.getRole() + ")</html>");
+        } else {
+            SignedInLabel.setText("");
+        }
     }
 
     private void PasswordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordTextFieldActionPerformed
@@ -229,7 +279,9 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CardSequencePanel;
+    private javax.swing.JButton LogoutButton;
     private javax.swing.JPasswordField PasswordTextField;
+    private javax.swing.JLabel SignedInLabel;
     private javax.swing.JSplitPane SplitHomeArea;
     private javax.swing.JTextField UserNameTextField;
     private javax.swing.JPanel actionsidejpanel;
