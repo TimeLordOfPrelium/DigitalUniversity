@@ -5,11 +5,17 @@
  */
 package UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp;
 
+import Business.Business;
+import Business.UserAccounts.AccountRules;
 import Business.UserAccounts.UserAccount;
+import Business.UserAccounts.UserAccountDirectory;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *h
+ * Admin edits one account: user name, password reset, and enable/disable.
+ *
  * @author kal bugrara
  */
 
@@ -19,16 +25,33 @@ public class AdminUserAccount extends javax.swing.JPanel {
      * Creates new form ManageSuppliersJPanel
      */
     JPanel CardSequencePanel;
-
+    Business business;
     UserAccount selecteduseraccount;
+    UserAccount currentuser; //the logged-in admin
 
-    public AdminUserAccount(UserAccount sua, JPanel jp) {
+    public AdminUserAccount(Business bz, UserAccount sua, UserAccount current, JPanel jp) {
 
         CardSequencePanel = jp;
-        selecteduseraccount= sua;
+        business = bz;
+        selecteduseraccount = sua;
+        currentuser = current;
         initComponents();
-        //display user details here
+        displayAccount();
 
+    }
+
+    void displayAccount() {
+
+        NameValue.setText(selecteduseraccount.getAssociatedPersonProfile().getPerson().getFullName());
+        RoleValue.setText(selecteduseraccount.getRole());
+        LastLoginValue.setText(ManageUserAccountsJPanel.formatDate(selecteduseraccount.getLastLogin()));
+        UsernameField.setText(selecteduseraccount.getUserLoginName());
+        ActiveCheckBox.setSelected(selecteduseraccount.isActive());
+    }
+
+    void goBack() {
+        CardSequencePanel.remove(this);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).last(CardSequencePanel); //show the screen underneath
     }
 
     /**
@@ -40,57 +63,156 @@ public class AdminUserAccount extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Back = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        Back1 = new javax.swing.JButton();
+        NameLabel = new javax.swing.JLabel();
+        NameValue = new javax.swing.JLabel();
+        RoleLabel = new javax.swing.JLabel();
+        RoleValue = new javax.swing.JLabel();
+        LastLoginLabel = new javax.swing.JLabel();
+        LastLoginValue = new javax.swing.JLabel();
+        UsernameLabel = new javax.swing.JLabel();
+        UsernameField = new javax.swing.JTextField();
+        NewPasswordLabel = new javax.swing.JLabel();
+        NewPasswordField = new javax.swing.JPasswordField();
+        ConfirmLabel = new javax.swing.JLabel();
+        ConfirmField = new javax.swing.JPasswordField();
+        ActiveCheckBox = new javax.swing.JCheckBox();
+        HintLabel = new javax.swing.JLabel();
+        BackButton = new javax.swing.JButton();
+        SaveButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
-
-        Back.setText("Update>>");
-        Back.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackActionPerformed(evt);
-            }
-        });
-        add(Back);
-        Back.setBounds(480, 290, 100, 32);
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel2.setText("Administer User Account");
         add(jLabel2);
         jLabel2.setBounds(21, 20, 550, 29);
 
-        Back1.setText("<< Back");
-        Back1.addActionListener(new java.awt.event.ActionListener() {
+        NameLabel.setText("Name");
+        add(NameLabel);
+        NameLabel.setBounds(30, 75, 140, 20);
+        add(NameValue);
+        NameValue.setBounds(180, 75, 400, 20);
+
+        RoleLabel.setText("Role");
+        add(RoleLabel);
+        RoleLabel.setBounds(30, 100, 140, 20);
+        add(RoleValue);
+        RoleValue.setBounds(180, 100, 400, 20);
+
+        LastLoginLabel.setText("Last Login");
+        add(LastLoginLabel);
+        LastLoginLabel.setBounds(30, 125, 140, 20);
+        add(LastLoginValue);
+        LastLoginValue.setBounds(180, 125, 400, 20);
+
+        UsernameLabel.setText("User Name");
+        add(UsernameLabel);
+        UsernameLabel.setBounds(30, 160, 140, 20);
+        add(UsernameField);
+        UsernameField.setBounds(180, 157, 200, 26);
+
+        NewPasswordLabel.setText("New Password");
+        add(NewPasswordLabel);
+        NewPasswordLabel.setBounds(30, 200, 140, 20);
+        add(NewPasswordField);
+        NewPasswordField.setBounds(180, 197, 200, 26);
+
+        ConfirmLabel.setText("Confirm Password");
+        add(ConfirmLabel);
+        ConfirmLabel.setBounds(30, 240, 140, 20);
+        add(ConfirmField);
+        ConfirmField.setBounds(180, 237, 200, 26);
+
+        ActiveCheckBox.setText("Account active (can log in)");
+        ActiveCheckBox.setOpaque(false);
+        add(ActiveCheckBox);
+        ActiveCheckBox.setBounds(176, 272, 300, 24);
+
+        HintLabel.setText("Leave both password fields empty to keep the current password.");
+        add(HintLabel);
+        HintLabel.setBounds(30, 303, 640, 20);
+
+        BackButton.setText("<< Back");
+        BackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Back1ActionPerformed(evt);
+                BackButtonActionPerformed(evt);
             }
         });
-        add(Back1);
-        Back1.setBounds(40, 290, 100, 32);
+        add(BackButton);
+        BackButton.setBounds(30, 340, 90, 32);
+
+        SaveButton.setText("Save Changes");
+        SaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveButtonActionPerformed(evt);
+            }
+        });
+        add(SaveButton);
+        SaveButton.setBounds(530, 340, 140, 32);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        // TODO add your handling code here:
+    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
+        goBack();
+    }//GEN-LAST:event_BackButtonActionPerformed
 
-        CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+        UserAccountDirectory uad = business.getUserAccountDirectory();
 
-    }//GEN-LAST:event_BackActionPerformed
+        String un = UsernameField.getText().trim();
+        String pw = new String(NewPasswordField.getPassword());
+        String confirm = new String(ConfirmField.getPassword());
+        boolean active = ActiveCheckBox.isSelected();
+        boolean changepassword = !pw.isEmpty() || !confirm.isEmpty();
 
-    private void Back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back1ActionPerformed
-        // TODO add your handling code here:
-         CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        String error = AccountRules.validateUsername(uad, un, selecteduseraccount);
+        if (error == null && changepassword) {
+            error = AccountRules.validatePassword(pw, confirm);
+        }
+        if (error == null && !active && selecteduseraccount == currentuser) {
+            error = "You cannot disable the account you are logged in with.";
+        }
+        if (error == null && !active && uad.isLastActiveAdmin(selecteduseraccount)) {
+            error = "This is the last active Admin account and cannot be disabled.";
+        }
+        if (error != null) {
+            JOptionPane.showMessageDialog(this, error, "Save changes", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
+        if (!un.equals(selecteduseraccount.getUserLoginName())) {
+            selecteduseraccount.setUserLoginName(un);
+        }
+        if (changepassword) {
+            selecteduseraccount.setPassword(pw);
+        }
+        if (active != selecteduseraccount.isActive()) {
+            selecteduseraccount.setActive(active);
+        }
 
-    }//GEN-LAST:event_Back1ActionPerformed
+        JOptionPane.showMessageDialog(this, "Account \"" + un + "\" saved.", "Save changes", JOptionPane.INFORMATION_MESSAGE);
+        goBack();
+    }//GEN-LAST:event_SaveButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Back;
-    private javax.swing.JButton Back1;
+    private javax.swing.JCheckBox ActiveCheckBox;
+    private javax.swing.JButton BackButton;
+    private javax.swing.JPasswordField ConfirmField;
+    private javax.swing.JLabel ConfirmLabel;
+    private javax.swing.JLabel HintLabel;
+    private javax.swing.JLabel LastLoginLabel;
+    private javax.swing.JLabel LastLoginValue;
+    private javax.swing.JLabel NameLabel;
+    private javax.swing.JLabel NameValue;
+    private javax.swing.JPasswordField NewPasswordField;
+    private javax.swing.JLabel NewPasswordLabel;
+    private javax.swing.JLabel RoleLabel;
+    private javax.swing.JLabel RoleValue;
+    private javax.swing.JButton SaveButton;
+    private javax.swing.JTextField UsernameField;
+    private javax.swing.JLabel UsernameLabel;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 
