@@ -6,6 +6,7 @@
 package Business;
 
 import Business.Profiles.EmployeeProfile;
+import Business.Profiles.FacultyProfile;
 import Business.Profiles.Profile;
 import Business.Profiles.StudentProfile;
 
@@ -15,6 +16,7 @@ import Business.UserAccounts.UserAccountDirectory;
 import UserInterface.WorkAreas.AdminRole.AdminRoleWorkAreaJPanel;
 import UserInterface.WorkAreas.FacultyRole.FacultyWorkAreaJPanel;
 import UserInterface.WorkAreas.StudentRole.StudentWorkAreaJPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -54,12 +56,13 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         UserNameTextField = new javax.swing.JTextField();
-        PasswordTextField = new javax.swing.JTextField();
+        PasswordTextField = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         CardSequencePanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Digital University");
 
         actionsidejpanel.setBackground(new java.awt.Color(0, 153, 153));
         actionsidejpanel.setMinimumSize(new java.awt.Dimension(200, 200));
@@ -73,9 +76,6 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
         jLabel1.setText("User Name");
 
-        UserNameTextField.setText("admin");
-
-        PasswordTextField.setText("****");
         PasswordTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PasswordTextFieldActionPerformed(evt);
@@ -129,56 +129,64 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        // TODO add your handling code here:
-        //      WorkAreaJPanel ura = new WorkAreaJPanel(workareajpanl);
+        String un = UserNameTextField.getText().trim();
+        String pw = new String(PasswordTextField.getPassword());
 
-        String un = UserNameTextField.getText();
-        String pw = PasswordTextField.getText();
+        if (un.isEmpty() || pw.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your user name and password.",
+                    "Login", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         UserAccountDirectory uad = business.getUserAccountDirectory();
         UserAccount useraccount = uad.AuthenticateUser(un, pw);
         if (useraccount == null) {
+            //only say "disabled" when the password was right, so we do not leak which accounts exist
+            UserAccount match = uad.findUserAccountByUsername(un);
+            String message = "Invalid user name or password.";
+            if (match != null && match.IsValidUser(un, pw) && !match.isActive()) {
+                message = "This account is disabled. Please contact a University Admin.";
+            }
+            JOptionPane.showMessageDialog(this, message, "Login failed", JOptionPane.ERROR_MESSAGE);
+            PasswordTextField.setText("");
             return;
         }
-        StudentWorkAreaJPanel studentworkareajpanel;
-        FacultyWorkAreaJPanel facultyworkarea;
-        AdminRoleWorkAreaJPanel adminworkarea;
-        String r = useraccount.getRole();
-        Profile profile = useraccount.getAssociatedPersonProfile();
 
-
-        if (profile instanceof EmployeeProfile) {
-
-            adminworkarea = new AdminRoleWorkAreaJPanel(business, CardSequencePanel);
-            CardSequencePanel.removeAll();
-            CardSequencePanel.add("Admin", adminworkarea);
-            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
-        }
-        
-        if (profile instanceof StudentProfile) {
-
-            StudentProfile spp = (StudentProfile) profile;
-            studentworkareajpanel = new StudentWorkAreaJPanel(business, spp, CardSequencePanel);
-            CardSequencePanel.removeAll();
-            CardSequencePanel.add("student", studentworkareajpanel);
-            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
+        JPanel workarea = createWorkArea(useraccount);
+        if (workarea == null) {
+            JOptionPane.showMessageDialog(this, "No work area is set up for the role " + useraccount.getRole() + ".",
+                    "Login failed", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
- /*      if (profile instanceof FacultyProfile) {
-            facultyworkarea = new FacultyWorkAreaJPanel(business, CardSequencePanel);
-            CardSequencePanel.removeAll();
-            CardSequencePanel.add("faculty", facultyworkarea);
-            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
-        }
-*/
+        useraccount.recordLogin();
+        CardSequencePanel.removeAll();
+        CardSequencePanel.add("workarea", workarea);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        CardSequencePanel.revalidate();
+        CardSequencePanel.repaint();
 
     }//GEN-LAST:event_LoginButtonActionPerformed
 
+    //routes each role to its own work area; null when the role has none
+    private JPanel createWorkArea(UserAccount useraccount) {
+
+        Profile profile = useraccount.getAssociatedPersonProfile();
+
+        if (profile instanceof EmployeeProfile) {
+            return new AdminRoleWorkAreaJPanel(business, CardSequencePanel);
+        }
+        if (profile instanceof FacultyProfile) {
+            return new FacultyWorkAreaJPanel(business, CardSequencePanel);
+        }
+        if (profile instanceof StudentProfile) {
+            return new StudentWorkAreaJPanel(business, (StudentProfile) profile, CardSequencePanel);
+        }
+        return null;
+    }
+
     private void PasswordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordTextFieldActionPerformed
-        // TODO add your handling code here:
+        LoginButtonActionPerformed(evt); //pressing Enter in the password box logs in
     }//GEN-LAST:event_PasswordTextFieldActionPerformed
 
     /**
@@ -221,7 +229,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CardSequencePanel;
-    private javax.swing.JTextField PasswordTextField;
+    private javax.swing.JPasswordField PasswordTextField;
     private javax.swing.JSplitPane SplitHomeArea;
     private javax.swing.JTextField UserNameTextField;
     private javax.swing.JPanel actionsidejpanel;
