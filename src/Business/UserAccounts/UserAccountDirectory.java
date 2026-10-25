@@ -42,6 +42,17 @@ public class UserAccountDirectory {
             return null; //not found after going through the whole list
          }
 
+    public UserAccount findUserAccountForProfile(Profile p) {
+
+        for (UserAccount ua : useraccountlist) {
+
+            if (ua.getAssociatedPersonProfile() == p) {
+                return ua;
+            }
+        }
+        return null;
+    }
+
     //user names are case-insensitive, matching how IsValidUser compares them
     public UserAccount findUserAccountByUsername(String un) {
 

@@ -101,6 +101,7 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
         Back = new javax.swing.JButton();
         Next = new javax.swing.JButton();
         DeleteButton = new javax.swing.JButton();
+        CreateButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -135,6 +136,15 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
         });
         add(DeleteButton);
         DeleteButton.setBounds(460, 320, 100, 32);
+
+        CreateButton.setText("Create New");
+        CreateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateButtonActionPerformed(evt);
+            }
+        });
+        add(CreateButton);
+        CreateButton.setBounds(340, 320, 110, 32);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setText("User Accounts");
@@ -213,9 +223,16 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
         refreshTable();
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
+    private void CreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateButtonActionPerformed
+        CreateUserAccountJPanel cuap = new CreateUserAccountJPanel(business, CardSequencePanel);
+        CardSequencePanel.add(cuap);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_CreateButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JButton CreateButton;
     private javax.swing.JButton DeleteButton;
     private javax.swing.JButton Next;
     private javax.swing.JTable UserAccountTable;
