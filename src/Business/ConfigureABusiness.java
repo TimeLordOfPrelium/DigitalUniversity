@@ -78,6 +78,8 @@ class ConfigureABusiness {
         newCourseOffer(fall2026, "INFO 6150", faculty2, 20);
         newCourseOffer(fall2026, "INFO 6210", faculty1, 15);
 
+        business.setCurrentSemester("Fall2026");
+
 // Enrollments. Older semesters first so the newest one becomes the current course load.
         enroll(student1, fall2025, "INFO 5100", 4.0f);
         enroll(student1, fall2025, "INFO 6150", 3.3f);

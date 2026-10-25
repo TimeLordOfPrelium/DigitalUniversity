@@ -5,6 +5,7 @@
  */
 package Business.Profiles;
 
+import Business.AccessControl.AccessControl;
 import Business.Person.Person;
 
 /**
@@ -23,7 +24,7 @@ public class StudentProfile extends Profile {
 
     @Override
     public String getRole() {
-        return "Student";
+        return AccessControl.ROLE_STUDENT;
     }
 
     public info5100.university.example.Persona.StudentProfile getAcademicProfile() {

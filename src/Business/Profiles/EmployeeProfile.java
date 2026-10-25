@@ -5,6 +5,7 @@
  */
 package Business.Profiles;
 
+import Business.AccessControl.AccessControl;
 import Business.Person.Person;
 
 /**
@@ -22,7 +23,7 @@ public class EmployeeProfile extends Profile {
     }
     @Override
     public String getRole(){
-        return  "Admin";
+        return AccessControl.ROLE_ADMIN;
     }
 
 }

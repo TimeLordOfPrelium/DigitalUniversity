@@ -14,11 +14,11 @@ import java.util.ArrayList;
  * @author kal bugrara
  */
 public class UserAccountDirectory {
-    
+
       ArrayList<UserAccount> useraccountlist ;
-    
+
       public UserAccountDirectory (){
-          
+
        useraccountlist = new ArrayList();
 
     }
@@ -40,16 +40,30 @@ public class UserAccountDirectory {
         }
             return null; //not found after going through the whole list
          }
+
+    //user names are case-insensitive, matching how IsValidUser compares them
+    public UserAccount findUserAccountByUsername(String un) {
+
+        for (UserAccount ua : useraccountlist) {
+
+            if (ua.getUserLoginName().equalsIgnoreCase(un)) {
+                return ua;
+            }
+        }
+        return null;
+    }
+
+    //returns the account only if the credentials match and the account is active
      public UserAccount AuthenticateUser(String un, String pw) {
 
         for (UserAccount ua : useraccountlist) {
 
-            if (ua.IsValidUser(un, pw)) {
+            if (ua.IsValidUser(un, pw) && ua.isActive()) {
                 return ua;
             }
         }
             return null; //not found after going through the whole list
-         }   
+         }
      public ArrayList<UserAccount> getUserAccountList()
      {
          return useraccountlist;

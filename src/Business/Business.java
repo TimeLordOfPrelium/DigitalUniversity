@@ -36,6 +36,7 @@ public class Business {
     FacultyDirectory facultydirectory;
 
     Department department; //the Digital University model: courses, schedules, transcripts
+    String currentsemester; //university-wide; only the Admin role may change it
 
 
 
@@ -79,6 +80,19 @@ public class Business {
 
     public Department getDepartment(){
         return department;
+    }
+
+    //the semester registration, transcripts and reports treat as "now"
+    public String getCurrentSemester(){
+        return currentsemester;
+    }
+
+    //only semesters that have a course schedule can become current
+    public void setCurrentSemester(String semester){
+        if (department.getCourseSchedule(semester) == null) {
+            throw new IllegalArgumentException("No course schedule exists for " + semester);
+        }
+        currentsemester = semester;
     }
 
     // The register methods below are the single place where a person gets a role.
