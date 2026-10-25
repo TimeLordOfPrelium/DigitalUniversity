@@ -9,8 +9,11 @@ import Business.Business;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
 
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,46 +27,68 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
      */
     JPanel CardSequencePanel;
     Business business;
-    UserAccount selecteduseraccount;
+    UserAccount currentuser; //the logged-in admin; they cannot delete or disable their own account
+
+    static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 
-    public ManageUserAccountsJPanel(Business bz, JPanel jp) {
+    public ManageUserAccountsJPanel(Business bz, UserAccount ua, JPanel jp) {
         CardSequencePanel = jp;
         this.business = bz;
+        currentuser = ua;
         initComponents();
+        UserAccountTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshTable();
+
+        //screens opened from here remove themselves on Back; reload so their changes show up
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                refreshTable();
+            }
+        });
 
     }
 
     public void refreshTable() {
 
-//clear supplier table
-        int rc = UserAccountTable.getRowCount();
-        int i;
-        for (i = rc - 1; i >= 0; i--) {
-            ((DefaultTableModel) UserAccountTable.getModel()).removeRow(i);
-        }
-
-
+        DefaultTableModel model = (DefaultTableModel) UserAccountTable.getModel();
+        model.setRowCount(0);
 
         UserAccountDirectory uad = business.getUserAccountDirectory();
 
-       
-
         for (UserAccount ua : uad.getUserAccountList()) {
 
-            Object[] row = new Object[5];
-            row[0] = ua;
- //           row[1] = ua.getStatus(); //complete this..
- //           row[2] = ua.getLastUpdated()
- //           row[3] = 
+            Object[] row = new Object[6];
+            row[0] = ua; //the account itself, so a selected row gives the account back
+            row[1] = ua.getRole();
+            row[2] = ua.getAssociatedPersonProfile().getPerson().getFullName();
+            row[3] = ua.getStatus();
+            row[4] = formatDate(ua.getLastLogin());
+            row[5] = formatDate(ua.getLastUpdated());
 
-            ((DefaultTableModel) UserAccountTable.getModel()).addRow(row);
+            model.addRow(row);
         }
 
     }
 
-    
+    static String formatDate(Date d) {
+        return d == null ? "Never" : DATEFORMAT.format(d);
+    }
+
+    //the account in the selected row, or null (after telling the user) when nothing is selected
+    UserAccount getSelectedAccount() {
+
+        int selectedrow = UserAccountTable.getSelectedRow();
+        if (selectedrow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a user account first.",
+                    "No selection", JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+        return (UserAccount) UserAccountTable.getValueAt(selectedrow, 0);
+    }
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,6 +100,7 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
 
         Back = new javax.swing.JButton();
         Next = new javax.swing.JButton();
+        DeleteButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -90,21 +116,30 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
             }
         });
         add(Back);
-        Back.setBounds(30, 300, 76, 32);
+        Back.setBounds(30, 320, 90, 32);
 
-        Next.setText("Next >>");
+        Next.setText("View / Edit >>");
         Next.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NextActionPerformed(evt);
             }
         });
         add(Next);
-        Next.setBounds(500, 300, 80, 32);
+        Next.setBounds(580, 320, 130, 32);
+
+        DeleteButton.setText("Delete");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
+        add(DeleteButton);
+        DeleteButton.setBounds(460, 320, 100, 32);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setText("User Accounts");
         add(jLabel1);
-        jLabel1.setBounds(30, 90, 190, 19);
+        jLabel1.setBounds(30, 80, 190, 19);
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel2.setText("Manage User Accounts");
@@ -113,64 +148,75 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
 
         UserAccountTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "User Name", "Status", "Last Activity", "Last Updated"
+                "User Name", "Role", "Name", "Status", "Last Login", "Last Updated"
             }
-        ));
-        UserAccountTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                UserAccountTableMousePressed(evt);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(UserAccountTable);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(30, 110, 550, 130);
+        jScrollPane1.setBounds(30, 105, 680, 200);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        // TODO add your handling code here:
         CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
- //       ((java.awt.CardLayout)CardSequencePanel.getLayout()).show(CardSequencePanel, "IdentifyEventTypes");
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).last(CardSequencePanel); //show the screen underneath
 
     }//GEN-LAST:event_BackActionPerformed
 
     private void NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextActionPerformed
-        // TODO add your handling code here:
-        if(selecteduseraccount==null) return;
+        UserAccount selecteduseraccount = getSelectedAccount();
+        if (selecteduseraccount == null) {
+            return;
+        }
         AdminUserAccount mppd = new AdminUserAccount(selecteduseraccount, CardSequencePanel);
         CardSequencePanel.add(mppd);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
     }//GEN-LAST:event_NextActionPerformed
 
-    private void UserAccountTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UserAccountTableMousePressed
-        // Extracts the row (uaser account) in the table that is selected by the user
-        int size = UserAccountTable.getRowCount();
-        int selectedrow = UserAccountTable.getSelectionModel().getLeadSelectionIndex();
-
-        if (selectedrow < 0 || selectedrow > size - 1) {
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        UserAccount ua = getSelectedAccount();
+        if (ua == null) {
             return;
         }
-        selecteduseraccount = (UserAccount) UserAccountTable.getValueAt(selectedrow, 0);
-        if (selecteduseraccount == null) {
+        UserAccountDirectory uad = business.getUserAccountDirectory();
+
+        if (ua == currentuser) {
+            JOptionPane.showMessageDialog(this, "You cannot delete the account you are logged in with.",
+                    "Delete account", JOptionPane.ERROR_MESSAGE);
             return;
-        
-        
-            
-    }//GEN-LAST:event_UserAccountTableMousePressed
-    
-    }
-    
+        }
+        if (uad.isLastActiveAdmin(ua)) {
+            JOptionPane.showMessageDialog(this, "This is the last active Admin account and cannot be deleted.",
+                    "Delete account", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Delete the account \"" + ua + "\"?\nOnly the login is removed; the person and their records are kept.",
+                "Delete account", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (choice != JOptionPane.YES_OPTION) {
+            return;
+        }
+        uad.removeUserAccount(ua);
+        refreshTable();
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JButton DeleteButton;
     private javax.swing.JButton Next;
     private javax.swing.JTable UserAccountTable;
     private javax.swing.JLabel jLabel1;
