@@ -41,6 +41,20 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         initComponents();
         jLabel1.setText("Welcome, " + faculty.getPerson().getFullName());
 
+        //screens opened from here remove themselves on Back; refresh the greeting in case the name changed
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                jLabel1.setText("Welcome, " + faculty.getPerson().getFullName());
+            }
+        });
+
+    }
+
+    //shows a Faculty screen on top of this work area (same pattern as the Admin work area)
+    private void openScreen(JPanel screen) {
+        CardSequencePanel.add(screen);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }
 
     // Faculty use case: each button below checks access first, then opens its screen.
@@ -178,7 +192,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_OWN_PROFILE)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.MANAGE_OWN_PROFILE);
+        openScreen(new FacultyProfileJPanel(business, useraccount, CardSequencePanel));
 }//GEN-LAST:event_jButton6IdentifyEventsActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
