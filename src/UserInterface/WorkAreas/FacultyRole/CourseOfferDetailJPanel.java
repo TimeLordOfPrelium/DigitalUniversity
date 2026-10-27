@@ -4,6 +4,7 @@ import Business.Business;
 import Business.Faculty.TeachingRoster;
 import info5100.university.example.CourseCatalog.Course;
 import info5100.university.example.CourseSchedule.CourseOffer;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -49,11 +50,19 @@ public class CourseOfferDetailJPanel extends javax.swing.JPanel {
         txtDescription.setText(courseoffer.getDescription());
     }
 
+    //catalog fields (number, name, credits) belong to the Admin; faculty edit only the class details
     private void setEditing(boolean editing) {
         txtRoom.setEditable(editing);
         txtMeetingTime.setEditable(editing);
         txtCapacity.setEditable(editing);
         txtDescription.setEditable(editing);
+        btnSave.setEnabled(editing);
+        btnEdit.setEnabled(canedit);
+        btnEdit.setText(editing ? "Cancel" : "Edit");
+    }
+
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Invalid input", JOptionPane.WARNING_MESSAGE);
     }
 
     /**
@@ -87,6 +96,8 @@ public class CourseOfferDetailJPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
         btnBack = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
@@ -182,6 +193,24 @@ public class CourseOfferDetailJPanel extends javax.swing.JPanel {
         });
         add(btnBack);
         btnBack.setBounds(40, 355, 90, 32);
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        add(btnEdit);
+        btnEdit.setBounds(550, 355, 100, 32);
+
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        add(btnSave);
+        btnSave.setBounds(670, 355, 100, 32);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -189,8 +218,72 @@ public class CourseOfferDetailJPanel extends javax.swing.JPanel {
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).last(CardSequencePanel); //show the screen underneath
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        if (!canedit) {
+            showError("Only classes in the current semester can be updated.");
+            return;
+        }
+        if (btnSave.isEnabled()) {
+            //Cancel: throw away unsaved changes
+            displayCourseOffer();
+            setEditing(false);
+        } else {
+            setEditing(true);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if (!canedit) {
+            showError("Only classes in the current semester can be updated.");
+            return;
+        }
+        String room = txtRoom.getText().trim();
+        String meetingtime = txtMeetingTime.getText().trim();
+        String description = txtDescription.getText().trim();
+
+        if (FacultyInputRules.isBlank(room) || !FacultyInputRules.isWithinLength(room, 40)) {
+            showError("Room is required and must be 40 characters or less.");
+            return;
+        }
+        if (FacultyInputRules.isBlank(meetingtime) || !FacultyInputRules.isWithinLength(meetingtime, 40)) {
+            showError("Meeting time is required and must be 40 characters or less, e.g. Mon/Wed 10:00-11:40 AM.");
+            return;
+        }
+        if (!FacultyInputRules.isWithinLength(description, 300)) {
+            showError("Description must be 300 characters or less.");
+            return;
+        }
+
+        int capacity;
+        try {
+            capacity = Integer.parseInt(txtCapacity.getText().trim());
+        } catch (NumberFormatException e) {
+            showError("Capacity must be a whole number.");
+            return;
+        }
+        if (capacity < 1 || capacity > 200) {
+            showError("Capacity must be between 1 and 200.");
+            return;
+        }
+        if (capacity < courseoffer.getEnrolledCount()) {
+            showError("Capacity cannot be lower than the " + courseoffer.getEnrolledCount() + " students already enrolled.");
+            return;
+        }
+
+        courseoffer.setCapacity(capacity);
+        courseoffer.setRoom(room);
+        courseoffer.setMeetingTime(meetingtime);
+        courseoffer.setDescription(description);
+
+        displayCourseOffer();
+        setEditing(false);
+        JOptionPane.showMessageDialog(this, "Course details updated.", "Course Details", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnSaveActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnSave;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCapacity;
     private javax.swing.JLabel lblCourseName;
