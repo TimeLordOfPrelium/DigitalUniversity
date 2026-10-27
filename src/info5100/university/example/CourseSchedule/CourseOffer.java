@@ -20,9 +20,17 @@ public class CourseOffer {
     ArrayList<Seat> seatlist;
     FacultyAssignment facultyassignment;
 
+    // Faculty use case (Samuel Haddad): details the teaching faculty member manages
+    String room;         //where the class meets
+    String meetingtime;  //e.g. Mon/Wed 10:00-11:40 AM
+    String description;  //short course offer description / syllabus notes
+
     public CourseOffer(Course c) {
         course = c;
         seatlist = new ArrayList();
+        room = "";
+        meetingtime = "";
+        description = "";
     }
      
     public void AssignAsTeacher(FacultyProfile fp) {
@@ -116,4 +124,53 @@ public class CourseOffer {
         return count;
     }
 
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getMeetingTime() {
+        return meetingtime;
+    }
+
+    public void setMeetingTime(String meetingtime) {
+        this.meetingtime = meetingtime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    //total number of seats, taken or free
+    public int getCapacity() {
+        return seatlist.size();
+    }
+
+    //grows or shrinks the class; only empty seats are removed, so it can never drop below the enrollment
+    public boolean setCapacity(int n) {
+        if (n < getEnrolledCount() || n < 1) {
+            return false;
+        }
+        while (seatlist.size() < n) {
+            seatlist.add(new Seat(this, seatlist.size()));
+        }
+        for (int i = seatlist.size() - 1; i >= 0 && seatlist.size() > n; i--) {
+            if (!seatlist.get(i).isOccupied()) {
+                seatlist.remove(i);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return course.getCOurseNumber() + " " + course.getName();
+    }
 }
