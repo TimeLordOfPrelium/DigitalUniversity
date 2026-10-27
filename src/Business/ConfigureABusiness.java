@@ -102,6 +102,17 @@ class ConfigureABusiness {
         uadirectory.newUserAccount(student2, "laura", "student123");
         uadirectory.newUserAccount(student3, "jack", "student123");
 
+// Faculty use case seed data (Samuel Haddad)
+        faculty1.setTitle("Associate Professor");
+        faculty1.setOffice("Dodge Hall 210");
+        faculty1.setOfficeHours("Tue 2:00-4:00 PM");
+        faculty1.setResearchArea("Software Engineering");
+
+        faculty2.setTitle("Assistant Teaching Professor");
+        faculty2.setOffice("Hurtig Hall 115");
+        faculty2.setOfficeHours("Thu 10:00 AM-12:00 PM");
+        faculty2.setResearchArea("Data Science");
+
         return business;
 
     }
