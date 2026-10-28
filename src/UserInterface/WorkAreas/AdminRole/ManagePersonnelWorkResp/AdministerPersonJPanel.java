@@ -6,10 +6,15 @@
 package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import Business.Business;
+import Business.Person.Person;
+import Business.Person.PersonDirectory;
+import Business.Person.PersonRules;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
+ * Admin registers a new person and gives them a role (student, faculty or staff).
  *
  * @author kal bugrara
  */
@@ -31,8 +36,9 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
 
     }
 
-    public void refreshTable() {
-
+    void goBack() {
+        CardSequencePanel.remove(this);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).last(CardSequencePanel); //show the screen underneath
     }
 
     /**
@@ -44,11 +50,64 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Back = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        FirstNameLabel = new javax.swing.JLabel();
+        FirstNameField = new javax.swing.JTextField();
+        LastNameLabel = new javax.swing.JLabel();
+        LastNameField = new javax.swing.JTextField();
+        EmailLabel = new javax.swing.JLabel();
+        EmailField = new javax.swing.JTextField();
+        PhoneLabel = new javax.swing.JLabel();
+        PhoneField = new javax.swing.JTextField();
+        RoleLabel = new javax.swing.JLabel();
+        RoleComboBox = new javax.swing.JComboBox<>();
+        HintLabel = new javax.swing.JLabel();
+        Back = new javax.swing.JButton();
+        RegisterButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        jLabel2.setText("Register Person");
+        add(jLabel2);
+        jLabel2.setBounds(21, 20, 550, 29);
+
+        FirstNameLabel.setText("First Name");
+        add(FirstNameLabel);
+        FirstNameLabel.setBounds(30, 80, 140, 20);
+        add(FirstNameField);
+        FirstNameField.setBounds(180, 77, 200, 26);
+
+        LastNameLabel.setText("Last Name");
+        add(LastNameLabel);
+        LastNameLabel.setBounds(30, 120, 140, 20);
+        add(LastNameField);
+        LastNameField.setBounds(180, 117, 200, 26);
+
+        EmailLabel.setText("Email");
+        add(EmailLabel);
+        EmailLabel.setBounds(30, 160, 140, 20);
+        add(EmailField);
+        EmailField.setBounds(180, 157, 300, 26);
+
+        PhoneLabel.setText("Phone (optional)");
+        add(PhoneLabel);
+        PhoneLabel.setBounds(30, 200, 140, 20);
+        add(PhoneField);
+        PhoneField.setBounds(180, 197, 200, 26);
+
+        RoleLabel.setText("Role");
+        add(RoleLabel);
+        RoleLabel.setBounds(30, 240, 140, 20);
+
+        RoleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Faculty", "Staff (Admin)" }));
+        add(RoleComboBox);
+        RoleComboBox.setBounds(180, 237, 200, 26);
+
+        HintLabel.setText("A login for this person can be created afterwards under Administer User Accounts.");
+        add(HintLabel);
+        HintLabel.setBounds(30, 285, 640, 20);
 
         Back.setText("<< Back");
         Back.addActionListener(new java.awt.event.ActionListener() {
@@ -57,25 +116,78 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
         });
         add(Back);
-        Back.setBounds(30, 290, 76, 32);
+        Back.setBounds(30, 330, 90, 32);
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        jLabel2.setText("Manage Person Profile");
-        add(jLabel2);
-        jLabel2.setBounds(21, 20, 550, 29);
+        RegisterButton.setText("Register");
+        RegisterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegisterButtonActionPerformed(evt);
+            }
+        });
+        add(RegisterButton);
+        RegisterButton.setBounds(530, 330, 140, 32);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        // TODO add your handling code here:
-        CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
+        goBack();
 
     }//GEN-LAST:event_BackActionPerformed
+
+    private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterButtonActionPerformed
+        String first = FirstNameField.getText().trim();
+        String last = LastNameField.getText().trim();
+        String email = EmailField.getText().trim();
+        String phone = PhoneField.getText().trim();
+
+        PersonDirectory pd = business.getPersonDirectory();
+        String error = PersonRules.validate(pd, first, last, email, phone, null);
+        if (error != null) {
+            JOptionPane.showMessageDialog(this, error, "Register person", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Person person = pd.newPerson(first, last, email);
+        person.setPhone(phone);
+
+        //the register methods also create the matching record in the university model
+        String role;
+        switch (RoleComboBox.getSelectedIndex()) {
+            case 1:
+                business.registerFaculty(person);
+                role = "Faculty";
+                break;
+            case 2:
+                business.registerEmployee(person);
+                role = "Staff (Admin)";
+                break;
+            default:
+                business.registerStudent(person);
+                role = "Student";
+                break;
+        }
+
+        JOptionPane.showMessageDialog(this,
+                person.getFullName() + " is registered as " + role + " with ID " + person.getPersonId() + ".\n"
+                + "Create their login under Administer User Accounts.",
+                "Register person", JOptionPane.INFORMATION_MESSAGE);
+        goBack();
+    }//GEN-LAST:event_RegisterButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
+    private javax.swing.JLabel EmailLabel;
+    private javax.swing.JTextField EmailField;
+    private javax.swing.JTextField FirstNameField;
+    private javax.swing.JLabel FirstNameLabel;
+    private javax.swing.JLabel HintLabel;
+    private javax.swing.JTextField LastNameField;
+    private javax.swing.JLabel LastNameLabel;
+    private javax.swing.JLabel PhoneLabel;
+    private javax.swing.JTextField PhoneField;
+    private javax.swing.JButton RegisterButton;
+    private javax.swing.JComboBox<String> RoleComboBox;
+    private javax.swing.JLabel RoleLabel;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 

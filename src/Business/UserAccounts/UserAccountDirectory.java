@@ -5,6 +5,7 @@
  */
 package Business.UserAccounts;
 
+import Business.AccessControl.AccessControl;
 import Business.Profiles.Profile;
 
 import java.util.ArrayList;
@@ -41,6 +42,17 @@ public class UserAccountDirectory {
             return null; //not found after going through the whole list
          }
 
+    public UserAccount findUserAccountForProfile(Profile p) {
+
+        for (UserAccount ua : useraccountlist) {
+
+            if (ua.getAssociatedPersonProfile() == p) {
+                return ua;
+            }
+        }
+        return null;
+    }
+
     //user names are case-insensitive, matching how IsValidUser compares them
     public UserAccount findUserAccountByUsername(String un) {
 
@@ -68,4 +80,28 @@ public class UserAccountDirectory {
      {
          return useraccountlist;
      }
+
+    //removes the login only; the person and their profile stay registered
+    public void removeUserAccount(UserAccount ua) {
+        useraccountlist.remove(ua);
+    }
+
+    public int countActiveAccounts(String role) {
+
+        int count = 0;
+        for (UserAccount ua : useraccountlist) {
+            if (ua.isActive() && ua.getRole().equals(role)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    //the university must always keep at least one admin who can log in
+    public boolean isLastActiveAdmin(UserAccount ua) {
+
+        return ua.isActive()
+                && ua.getRole().equals(AccessControl.ROLE_ADMIN)
+                && countActiveAccounts(AccessControl.ROLE_ADMIN) <= 1;
+    }
 }

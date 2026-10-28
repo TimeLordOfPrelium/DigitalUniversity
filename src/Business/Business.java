@@ -118,6 +118,23 @@ public class Business {
         return employeedirectory.newEmployeeProfile(p);
     }
 
+    //registered role profiles that do not have a login yet (candidates for a new account)
+    public ArrayList<Profile> getProfilesWithoutAccount() {
+
+        ArrayList<Profile> all = new ArrayList<>();
+        all.addAll(employeedirectory.getEmployeeList());
+        all.addAll(facultydirectory.getFacultyList());
+        all.addAll(studentdirectory.getStudentList());
+
+        ArrayList<Profile> result = new ArrayList<>();
+        for (Profile p : all) {
+            if (useraccountdirectory.findUserAccountForProfile(p) == null) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
+
     //every role profile the person holds (a person can be e.g. both staff and student)
     public ArrayList<Profile> getProfilesFor(Person p) {
 
