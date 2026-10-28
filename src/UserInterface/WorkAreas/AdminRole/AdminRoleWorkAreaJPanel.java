@@ -169,7 +169,7 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
             return;
         }
 
-        ManageUserAccountsJPanel aos = new ManageUserAccountsJPanel(business, CardSequencePanel);
+        ManageUserAccountsJPanel aos = new ManageUserAccountsJPanel(business, useraccount, CardSequencePanel);
 
         CardSequencePanel.add("ManageVulns", aos);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
