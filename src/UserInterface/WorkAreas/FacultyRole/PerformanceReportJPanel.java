@@ -34,6 +34,8 @@ public class PerformanceReportJPanel extends javax.swing.JPanel {
         CardSequencePanel = clp;
         initComponents();
         tblSummary.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblSummary.getColumnModel().getColumn(0).setPreferredWidth(260); //room for the full course name
+        tblSummary.getColumnModel().getColumn(3).setPreferredWidth(110);
 
         //picking a class in the summary shows its student grades and grade spread below
         tblSummary.getSelectionModel().addListSelectionListener(e -> {

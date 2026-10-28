@@ -39,6 +39,7 @@ public class StudentProfilesJPanel extends javax.swing.JPanel {
         rowstudents = new ArrayList<>();
         initComponents();
         tblStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblStudents.getColumnModel().getColumn(2).setPreferredWidth(200); //room for the full email
         populateClasses();
         refreshTable();
     }

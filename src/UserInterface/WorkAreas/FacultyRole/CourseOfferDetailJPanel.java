@@ -48,6 +48,8 @@ public class CourseOfferDetailJPanel extends javax.swing.JPanel {
         txtMeetingTime.setText(courseoffer.getMeetingTime());
         txtCapacity.setText(String.valueOf(courseoffer.getCapacity()));
         txtDescription.setText(courseoffer.getDescription());
+        txtCourseName.setCaretPosition(0); //show the start of long names, not the end
+        txtDescription.setCaretPosition(0);
     }
 
     //catalog fields (number, name, credits) belong to the Admin; faculty edit only the class details

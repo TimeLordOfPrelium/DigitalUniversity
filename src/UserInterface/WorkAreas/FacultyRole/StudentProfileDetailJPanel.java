@@ -30,6 +30,7 @@ public class StudentProfileDetailJPanel extends javax.swing.JPanel {
         student = sp;
         CardSequencePanel = clp;
         initComponents();
+        tblCourses.getColumnModel().getColumn(1).setPreferredWidth(320); //room for the full course name
         displayStudent();
     }
 
