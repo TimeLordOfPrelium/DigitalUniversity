@@ -113,6 +113,19 @@ class ConfigureABusiness {
         faculty2.setOfficeHours("Thu 10:00 AM-12:00 PM");
         faculty2.setResearchArea("Data Science");
 
+        setCourseDetails(fall2025, "INFO 5100", "Snell Library 033", "Mon/Wed 10:00-11:40 AM",
+                "Object-oriented design and Java Swing application development.");
+        setCourseDetails(fall2025, "INFO 6150", "Ryder Hall 155", "Tue 6:00-9:00 PM",
+                "Front-end web design, accessibility and user experience.");
+        setCourseDetails(fall2026, "INFO 5100", "Snell Library 033", "Mon/Wed 10:00-11:40 AM",
+                "Object-oriented design and Java Swing application development.");
+        setCourseDetails(fall2026, "INFO 6205", "Richards Hall 300", "Tue/Fri 1:35-3:15 PM",
+                "Data structures, algorithm analysis and program structure.");
+        setCourseDetails(fall2026, "INFO 6150", "Ryder Hall 155", "Thu 6:00-9:00 PM",
+                "Front-end web design, accessibility and user experience.");
+        setCourseDetails(fall2026, "INFO 6210", "Dodge Hall 050", "Wed 6:00-9:00 PM",
+                "Relational design, SQL and database administration.");
+
         return business;
 
     }
@@ -123,6 +136,18 @@ class ConfigureABusiness {
         co.generatSeats(seats);
         co.AssignAsTeacher(teacher.getAcademicProfile());
         return co;
+    }
+
+    //room, meeting time and description of a course offer (Faculty use case seed data)
+    static void setCourseDetails(CourseSchedule cs, String coursenumber, String room, String time, String description) {
+
+        CourseOffer co = cs.getCourseOfferByNumber(coursenumber);
+        if (co == null) {
+            return;
+        }
+        co.setRoom(room);
+        co.setMeetingTime(time);
+        co.setDescription(description);
     }
 
     //registers the student in a class; grade 0 means not graded yet

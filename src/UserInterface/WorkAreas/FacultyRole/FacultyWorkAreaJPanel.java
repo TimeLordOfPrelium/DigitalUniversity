@@ -177,7 +177,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_COURSES)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.MANAGE_COURSES);
+        openScreen(new ManageCoursesJPanel(business, useraccount, CardSequencePanel));
 
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed
 
