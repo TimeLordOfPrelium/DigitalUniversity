@@ -1,0 +1,9 @@
+# NetBeans build output and per-user settings
+build/
+dist/
+nbproject/private/
+
+# OS / IDE noise
+.DS_Store
+Thumbs.db
+*.class
