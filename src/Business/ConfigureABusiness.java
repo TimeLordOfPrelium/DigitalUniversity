@@ -126,6 +126,13 @@ class ConfigureABusiness {
         setCourseDetails(fall2026, "INFO 6210", "Dodge Hall 050", "Wed 6:00-9:00 PM",
                 "Relational design, SQL and database administration.");
 
+        student1.setHobbies("Rock climbing, chess");
+        student1.setInterests("Backend development, cloud computing");
+        student2.setHobbies("Photography, running");
+        student2.setInterests("UX research, data visualization");
+        student3.setHobbies("Basketball, cooking");
+        student3.setInterests("Mobile apps, product management");
+
         return business;
 
     }
