@@ -34,6 +34,8 @@ public class ManageCoursesJPanel extends javax.swing.JPanel {
         CardSequencePanel = clp;
         initComponents();
         tblCourses.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblCourses.getColumnModel().getColumn(0).setPreferredWidth(260); //room for the full course name
+        tblCourses.getColumnModel().getColumn(1).setPreferredWidth(50);
         lblSubtitle.setText("The classes you teach. Only the current semester (" + business.getCurrentSemester()
                 + ") can be updated or graded.");
         populateSemesters();

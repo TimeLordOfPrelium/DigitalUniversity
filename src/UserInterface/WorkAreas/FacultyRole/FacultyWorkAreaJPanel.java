@@ -57,9 +57,8 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }
 
-    // Faculty use case: each button below checks access first, then opens its screen.
-    // Replace AccessGuard.comingSoon(...) with the screen, using the same pattern as the
-    // Admin work area: CardSequencePanel.add(...) then CardLayout.next(...).
+    // Faculty use case (Samuel Haddad): each button below checks access first, then opens its
+    // screen using the same pattern as the Admin work area: CardSequencePanel.add(...) then CardLayout.next(...).
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -185,7 +184,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.VIEW_STUDENT_PROFILES)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.VIEW_STUDENT_PROFILES);
+        openScreen(new StudentProfilesJPanel(business, useraccount, CardSequencePanel));
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton6IdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6IdentifyEventsActionPerformed

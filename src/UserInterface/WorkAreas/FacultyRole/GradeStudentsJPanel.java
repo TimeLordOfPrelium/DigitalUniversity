@@ -209,8 +209,10 @@ public class GradeStudentsJPanel extends javax.swing.JPanel {
         if (choice != JOptionPane.YES_OPTION) {
             return;
         }
+        int selectedrow = tblStudents.getSelectedRow();
         sa.setGrade(0); //0 means not graded
         refreshTable();
+        tblStudents.setRowSelectionInterval(selectedrow, selectedrow); //keep the same student selected
     }//GEN-LAST:event_btnClearGradeActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
