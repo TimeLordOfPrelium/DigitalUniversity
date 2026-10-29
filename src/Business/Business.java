@@ -15,6 +15,7 @@ import Business.Profiles.Profile;
 import Business.Profiles.StudentDirectory;
 import Business.Profiles.StudentProfile;
 
+import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
 
 import info5100.university.example.Department.Department;
@@ -116,6 +117,47 @@ public class Business {
     public EmployeeProfile registerEmployee(Person p) {
 
         return employeedirectory.newEmployeeProfile(p);
+    }
+
+    // The delete methods below undo a register method: they remove the login, the
+    // university-model record and the role profile together, and drop the person
+    // only when they hold no other role.
+
+    //drops every class the student holds (freeing the seats) before removing the record
+    public void deleteStudent(StudentProfile sp) {
+
+        removeAccountFor(sp);
+        info5100.university.example.Persona.StudentProfile ap = sp.getAcademicProfile();
+        department.getStudentDirectory().removeStudent(ap);
+        department.getPersonDirectory().removePerson(ap.getPerson());
+        studentdirectory.removeStudent(sp);
+        removePersonIfNoRoles(sp.getPerson());
+    }
+
+    //unassigns the faculty member from every course they teach before removing the record
+    public void deleteFaculty(FacultyProfile fp) {
+
+        removeAccountFor(fp);
+        info5100.university.example.Persona.Faculty.FacultyProfile ap = fp.getAcademicProfile();
+        department.getFacultyDirectory().removeFaculty(ap);
+        department.getPersonDirectory().removePerson(ap.getPerson());
+        facultydirectory.removeFaculty(fp);
+        removePersonIfNoRoles(fp.getPerson());
+    }
+
+    private void removeAccountFor(Profile p) {
+
+        UserAccount ua = useraccountdirectory.findUserAccountForProfile(p);
+        if (ua != null) {
+            useraccountdirectory.removeUserAccount(ua);
+        }
+    }
+
+    private void removePersonIfNoRoles(Person p) {
+
+        if (getProfilesFor(p).isEmpty()) {
+            persondirectory.removePerson(p);
+        }
     }
 
     //registered role profiles that do not have a login yet (candidates for a new account)
