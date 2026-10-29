@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Faculty use case: Manage courses.
  * Lists the classes the logged-in faculty member teaches, filtered by semester.
- * From here the faculty member opens a class to view or update its details.
+ * From here the faculty member opens a class to view or update its details or to grade students.
  *
  * @author Samuel Haddad
  */
@@ -112,6 +112,7 @@ public class ManageCoursesJPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCourses = new javax.swing.JTable();
         btnBack = new javax.swing.JButton();
+        btnGradeStudents = new javax.swing.JButton();
         btnViewDetails = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 153, 153));
@@ -168,6 +169,15 @@ public class ManageCoursesJPanel extends javax.swing.JPanel {
         add(btnBack);
         btnBack.setBounds(30, 340, 90, 32);
 
+        btnGradeStudents.setText("Grade Students >>");
+        btnGradeStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGradeStudentsActionPerformed(evt);
+            }
+        });
+        add(btnGradeStudents);
+        btnGradeStudents.setBounds(420, 340, 160, 32);
+
         btnViewDetails.setText("View / Edit Details >>");
         btnViewDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,8 +207,17 @@ public class ManageCoursesJPanel extends javax.swing.JPanel {
         openScreen(new CourseOfferDetailJPanel(business, co, CardSequencePanel));
     }//GEN-LAST:event_btnViewDetailsActionPerformed
 
+    private void btnGradeStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGradeStudentsActionPerformed
+        CourseOffer co = getSelectedCourseOffer();
+        if (co == null) {
+            return;
+        }
+        openScreen(new GradeStudentsJPanel(business, co, CardSequencePanel));
+    }//GEN-LAST:event_btnGradeStudentsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnGradeStudents;
     private javax.swing.JButton btnViewDetails;
     private javax.swing.JComboBox<Object> cmbSemester;
     private javax.swing.JScrollPane jScrollPane1;
