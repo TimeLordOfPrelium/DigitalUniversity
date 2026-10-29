@@ -15,6 +15,7 @@ import Business.Business;
 import Business.UserAccounts.UserAccount;
 import UserInterface.AccessGuard;
 import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUserAccountsJPanel;
+import UserInterface.WorkAreas.AdminRole.ManageFacultyRecordsWorkResp.ManageFacultyJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
 import UserInterface.WorkAreas.AdminRole.ManageStudentRecordsWorkResp.ManageStudentsJPanel;
 
@@ -211,7 +212,11 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_FACULTY_RECORDS)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.MANAGE_FACULTY_RECORDS);
+
+        ManageFacultyJPanel mfp = new ManageFacultyJPanel(business, CardSequencePanel);
+
+        CardSequencePanel.add("Manage Faculty", mfp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton9ActionPerformed
 
 
