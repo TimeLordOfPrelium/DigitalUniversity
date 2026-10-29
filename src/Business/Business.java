@@ -18,6 +18,8 @@ import Business.Profiles.StudentProfile;
 import Business.UserAccounts.UserAccount;
 import Business.UserAccounts.UserAccountDirectory;
 
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.Department.Department;
 
 import java.util.ArrayList;
@@ -123,26 +125,28 @@ public class Business {
     // university-model record and the role profile together, and drop the person
     // only when they hold no other role.
 
-    //drops every class the student holds (freeing the seats) before removing the record
-    public void deleteStudent(StudentProfile sp) {
+    //drops every class the student holds (freeing the seats) before removing the record.
+    //Returns true if the person record was removed too (false when they still hold another role).
+    public boolean deleteStudent(StudentProfile sp) {
 
         removeAccountFor(sp);
         info5100.university.example.Persona.StudentProfile ap = sp.getAcademicProfile();
         department.getStudentDirectory().removeStudent(ap);
         department.getPersonDirectory().removePerson(ap.getPerson());
         studentdirectory.removeStudent(sp);
-        removePersonIfNoRoles(sp.getPerson());
+        return removePersonIfNoRoles(sp.getPerson());
     }
 
-    //unassigns the faculty member from every course they teach before removing the record
-    public void deleteFaculty(FacultyProfile fp) {
+    //unassigns the faculty member from every course they teach before removing the record.
+    //Returns true if the person record was removed too (false when they still hold another role).
+    public boolean deleteFaculty(FacultyProfile fp) {
 
         removeAccountFor(fp);
         info5100.university.example.Persona.Faculty.FacultyProfile ap = fp.getAcademicProfile();
         department.getFacultyDirectory().removeFaculty(ap);
         department.getPersonDirectory().removePerson(ap.getPerson());
         facultydirectory.removeFaculty(fp);
-        removePersonIfNoRoles(fp.getPerson());
+        return removePersonIfNoRoles(fp.getPerson());
     }
 
     private void removeAccountFor(Profile p) {
@@ -153,11 +157,24 @@ public class Business {
         }
     }
 
-    private void removePersonIfNoRoles(Person p) {
+    private boolean removePersonIfNoRoles(Person p) {
 
         if (getProfilesFor(p).isEmpty()) {
             persondirectory.removePerson(p);
+            return true;
         }
+        return false;
+    }
+
+    //the semester whose schedule holds this course offer ("" if it is on none)
+    public String getSemesterOf(CourseOffer co) {
+
+        for (CourseSchedule cs : department.getCourseSchedules()) {
+            if (cs.getSchedule().contains(co)) {
+                return cs.getSemester();
+            }
+        }
+        return "";
     }
 
     //registered role profiles that do not have a login yet (candidates for a new account)
