@@ -199,7 +199,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.PERFORMANCE_REPORTS)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.PERFORMANCE_REPORTS);
+        openScreen(new PerformanceReportJPanel(business, useraccount, CardSequencePanel));
 }//GEN-LAST:event_jButton11ActionPerformed
 
 
