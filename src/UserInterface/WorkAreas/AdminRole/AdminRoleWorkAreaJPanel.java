@@ -18,7 +18,7 @@ import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUs
 import UserInterface.WorkAreas.AdminRole.ManageFacultyRecordsWorkResp.ManageFacultyJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
 import UserInterface.WorkAreas.AdminRole.ManageStudentRecordsWorkResp.ManageStudentsJPanel;
-
+import UserInterface.WorkAreas.AdminRole.AdminProfileWorkResp.AdminProfileJPanel;
 import javax.swing.JPanel;
 
 /**
@@ -205,7 +205,10 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_OWN_PROFILE)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.MANAGE_OWN_PROFILE);
+                AdminProfileJPanel app = new AdminProfileJPanel(business, useraccount, CardSequencePanel);
+
+        CardSequencePanel.add("My Profile", app);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton6IdentifyEventsActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
