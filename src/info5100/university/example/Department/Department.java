@@ -79,6 +79,16 @@ public void addElectiveCourse(Course c){
         return mastercoursecatalog.values();
     }
 
+    //the semester whose schedule contains the course offer (an offer does not store it itself)
+    public String findSemesterOf(CourseOffer co) {
+        for (CourseSchedule cs : mastercoursecatalog.values()) {
+            if (cs.getSchedule().contains(co)) {
+                return cs.getSemester();
+            }
+        }
+        return null;
+    }
+
     public CourseSchedule newCourseSchedule(String semester) {
 
         CourseSchedule cs = new CourseSchedule(semester, coursecatalog);

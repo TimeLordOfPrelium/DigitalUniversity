@@ -15,7 +15,9 @@ import Business.Business;
 import Business.UserAccounts.UserAccount;
 import UserInterface.AccessGuard;
 import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUserAccountsJPanel;
+import UserInterface.WorkAreas.AdminRole.ManageFacultyRecordsWorkResp.ManageFacultyJPanel;
 import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+import UserInterface.WorkAreas.AdminRole.ManageStudentRecordsWorkResp.ManageStudentsJPanel;
 
 import javax.swing.JPanel;
 
@@ -192,7 +194,11 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_STUDENT_RECORDS)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.MANAGE_STUDENT_RECORDS);
+
+        ManageStudentsJPanel msp = new ManageStudentsJPanel(business, CardSequencePanel);
+
+        CardSequencePanel.add("Manage Students", msp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6IdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6IdentifyEventsActionPerformed
@@ -206,7 +212,11 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.MANAGE_FACULTY_RECORDS)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.MANAGE_FACULTY_RECORDS);
+
+        ManageFacultyJPanel mfp = new ManageFacultyJPanel(business, CardSequencePanel);
+
+        CardSequencePanel.add("Manage Faculty", mfp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton9ActionPerformed
 
 
