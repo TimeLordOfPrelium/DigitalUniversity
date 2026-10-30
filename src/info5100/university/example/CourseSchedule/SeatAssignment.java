@@ -10,6 +10,7 @@ import info5100.university.example.CourseCatalog.Course;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class SeatAssignment {
     float grade; //(Letter grade mappings: A=4.0, A-=3.7, B+=3.3, B=3.0, )

@@ -14,6 +14,7 @@ import java.util.HashMap;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class Transcript {
 

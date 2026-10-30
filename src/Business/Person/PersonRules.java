@@ -9,6 +9,8 @@ package Business.Person;
  * Validation rules for a person's details, shared by every screen that registers
  * or edits a person. Returns an error message, or null when the details are valid.
  * Callers pass trimmed strings.
+ *
+ * @author Philip Dixon
  */
 public class PersonRules {
 

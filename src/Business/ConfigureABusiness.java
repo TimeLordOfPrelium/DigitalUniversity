@@ -24,6 +24,8 @@ import info5100.university.example.Department.Department;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
+ * @author Samuel Haddad (modified)
  */
 class ConfigureABusiness {
 

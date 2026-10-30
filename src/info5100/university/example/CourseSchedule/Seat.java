@@ -8,6 +8,7 @@ package info5100.university.example.CourseSchedule;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class Seat {
     

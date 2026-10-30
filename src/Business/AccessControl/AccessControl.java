@@ -14,6 +14,8 @@ import java.util.Set;
 /**
  * Role-based authorization: which features each role may use.
  * This table is the single source of truth; the UI never decides on its own.
+ *
+ * @author Philip Dixon
  */
 public class AccessControl {
 

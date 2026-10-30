@@ -17,6 +17,7 @@ import javax.swing.JPanel;
  * Admin edits one account: user name, password reset, and enable/disable.
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 
 public class AdminUserAccount extends javax.swing.JPanel {

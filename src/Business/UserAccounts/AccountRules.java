@@ -8,6 +8,8 @@ package Business.UserAccounts;
 /**
  * Validation rules for user names and passwords, shared by every screen that
  * creates or edits an account. Each check returns an error message, or null when valid.
+ *
+ * @author Philip Dixon
  */
 public class AccountRules {
 

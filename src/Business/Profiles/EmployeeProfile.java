@@ -11,6 +11,7 @@ import Business.Person.Person;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class EmployeeProfile extends Profile {
 

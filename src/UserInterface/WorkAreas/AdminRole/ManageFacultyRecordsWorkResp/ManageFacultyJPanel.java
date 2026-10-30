@@ -20,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * Admin lists, searches, opens and deletes faculty records.
+ *
+ * @author Philip Dixon
  */
 public class ManageFacultyJPanel extends javax.swing.JPanel {
 

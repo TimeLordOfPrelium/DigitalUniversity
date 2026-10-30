@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 

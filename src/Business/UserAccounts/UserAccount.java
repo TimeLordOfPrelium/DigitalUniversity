@@ -14,6 +14,7 @@ import java.util.Date;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class UserAccount {
 
