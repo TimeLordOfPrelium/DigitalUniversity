@@ -10,6 +10,8 @@ package Business.AccessControl;
  * whether the logged-in user may use a feature before opening its screen.
  *
  * To add a feature: add it here, then grant it to a role in AccessControl.
+ *
+ * @author Philip Dixon
  */
 public enum Feature {
 

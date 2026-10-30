@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 
 /**
  * Admin creates a login for a registered person who does not have one yet.
+ *
+ * @author Philip Dixon
  */
 public class CreateUserAccountJPanel extends javax.swing.JPanel {
 

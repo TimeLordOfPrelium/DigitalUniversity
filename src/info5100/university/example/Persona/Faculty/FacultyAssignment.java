@@ -10,6 +10,7 @@ import info5100.university.example.CourseSchedule.CourseOffer;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class FacultyAssignment {
     double tracerating;

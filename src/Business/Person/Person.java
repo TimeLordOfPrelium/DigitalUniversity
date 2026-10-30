@@ -8,6 +8,7 @@ package Business.Person;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class Person {
 

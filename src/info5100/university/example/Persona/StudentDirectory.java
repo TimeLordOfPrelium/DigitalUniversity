@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class StudentDirectory {
 

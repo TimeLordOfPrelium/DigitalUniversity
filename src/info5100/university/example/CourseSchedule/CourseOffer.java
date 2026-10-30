@@ -13,6 +13,8 @@ import java.util.ArrayList;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
+ * @author Samuel Haddad (modified)
  */
 public class CourseOffer {
 

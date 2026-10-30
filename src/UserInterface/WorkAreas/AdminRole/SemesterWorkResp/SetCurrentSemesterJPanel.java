@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * Admin chooses the university's current semester. Faculty and Student screens
  * only read it; this is the one place it can be changed.
  *
- * @author kal bugrara
+ * @author Philip Dixon
  */
 public class SetCurrentSemesterJPanel extends javax.swing.JPanel {
 

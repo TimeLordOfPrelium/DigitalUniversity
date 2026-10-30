@@ -10,7 +10,8 @@ import Business.Person.Person;
 
 /**
  *
- * @author kal bugrara
+ * @author Philip Dixon
+ * @author Samuel Haddad (modified)
  */
 public class FacultyProfile extends Profile {
 

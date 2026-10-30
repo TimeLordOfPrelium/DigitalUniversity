@@ -23,6 +23,8 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Admin views one student's record: contact details (editable) and the
  * transcript (read-only; grades are the Faculty use case).
+ *
+ * @author Philip Dixon
  */
 public class StudentRecordJPanel extends javax.swing.JPanel {
 

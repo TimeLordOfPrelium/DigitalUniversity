@@ -8,6 +8,7 @@ package info5100.university.example.CourseCatalog;
 /**
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class Course {
 

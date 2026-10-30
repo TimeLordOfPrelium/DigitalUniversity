@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * Lists everyone registered with the university and the roles they hold.
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class ManagePersonsJPanel extends javax.swing.JPanel {
 

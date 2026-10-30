@@ -17,6 +17,7 @@ import javax.swing.JPanel;
  * Admin registers a new person and gives them a role (student, faculty or staff).
  *
  * @author kal bugrara
+ * @author Philip Dixon (modified)
  */
 public class AdministerPersonJPanel extends javax.swing.JPanel {
 

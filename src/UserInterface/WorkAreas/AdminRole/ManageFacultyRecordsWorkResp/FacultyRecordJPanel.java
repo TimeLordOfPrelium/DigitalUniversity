@@ -21,6 +21,8 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Admin views one faculty member's record: contact details (editable) and the
  * courses they teach (read-only; course details are the Faculty use case).
+ *
+ * @author Philip Dixon
  */
 public class FacultyRecordJPanel extends javax.swing.JPanel {
 

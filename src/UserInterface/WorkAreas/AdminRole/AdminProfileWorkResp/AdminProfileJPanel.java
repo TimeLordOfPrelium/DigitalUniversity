@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  * The logged-in administrator views and updates their own details and changes
  * their password. It only ever works on the account that is logged in.
  *
- * @author kal bugrara
+ * @author Philip Dixon
  */
 public class AdminProfileJPanel extends javax.swing.JPanel {
 

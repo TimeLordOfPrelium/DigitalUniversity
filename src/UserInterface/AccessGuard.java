@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 /**
  * UI side of authorization. Every work-area button calls allow(...) before it
  * opens a screen, so a feature is never reachable without permission.
+ *
+ * @author Philip Dixon
  */
 public class AccessGuard {
 

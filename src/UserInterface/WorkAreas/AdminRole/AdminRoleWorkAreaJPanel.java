@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 /**
  *
  * @author kal
+ * @author Philip Dixon (modified)
  */
 public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
 
