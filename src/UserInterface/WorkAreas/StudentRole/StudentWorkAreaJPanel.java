@@ -184,7 +184,9 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.COURSEWORK)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.COURSEWORK);
+        CourseWorkJPanel cw = new CourseWorkJPanel(business, student, CardSequencePanel);
+        CardSequencePanel.add("CourseWork", cw);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed
 
@@ -199,21 +201,27 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
         if (!AccessGuard.allow(this, useraccount, Feature.GRADUATION_AUDIT)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.GRADUATION_AUDIT);
+        GraduationAuditJPanel ga = new GraduationAuditJPanel(business, student, CardSequencePanel);
+        CardSequencePanel.add("GraduationAudit", ga);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         if (!AccessGuard.allow(this, useraccount, Feature.COURSE_REGISTRATION)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.COURSE_REGISTRATION);
+        RegistrationJPanel rp = new RegistrationJPanel(business, student, CardSequencePanel);
+        CardSequencePanel.add("Registration", rp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         if (!AccessGuard.allow(this, useraccount, Feature.TRANSCRIPT)) {
             return;
         }
-        AccessGuard.comingSoon(this, Feature.TRANSCRIPT);
+        TranscriptJPanel tp = new TranscriptJPanel(student, CardSequencePanel);
+        CardSequencePanel.add("Transcript", tp);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton12ActionPerformed
 
 

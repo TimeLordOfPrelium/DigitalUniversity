@@ -39,6 +39,27 @@ public class StudentProfile extends Profile {
         return academicprofile;
     }
 
+    // Student use case: coursework submissions as {course #, assignment, submitted at}
+    java.util.ArrayList<String[]> submissions = new java.util.ArrayList<>();
+
+    public void addSubmission(String coursenumber, String assignment, String when) {
+        submissions.add(new String[]{coursenumber, assignment, when});
+    }
+
+    public java.util.ArrayList<String[]> getSubmissions() {
+        return submissions;
+    }
+
+    public int getSubmissionCount(String coursenumber) {
+        int n = 0;
+        for (String[] s : submissions) {
+            if (s[0].equals(coursenumber)) {
+                n++;
+            }
+        }
+        return n;
+    }
+
     public String getHobbies() {
         return hobbies;
     }

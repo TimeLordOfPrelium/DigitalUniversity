@@ -8,7 +8,7 @@ INFO 5100 Midterm Project
 |---|---|---|---|
 | Philip Dixon | 003945527 | University Admin | Shared project setup and access-control layer; administer user accounts; register persons; manage student and faculty records; set the current semester; admin profile |
 | Samuel Haddad | 003948956 | Faculty Member | Manage courses; grade students; performance reports; student profiles; faculty profile |
-| James Russell | _NUID_ | Student | _responsibilities_ |
+| James Russell | 003948284 | Student | Review transcript; register for classes (enroll/drop); graduation audit; manage coursework (submit assignments, track progress) |
 
 ## Project Overview
 
@@ -29,7 +29,7 @@ built on the **ProfileWorkareaExample** skeleton (Swing work areas with CardLayo
 - Secure login and logout, with disabled accounts and per-feature permission checks
 - **Admin:** user accounts, person registration, student and faculty records, current semester, own profile
 - **Faculty:** course management, grading, performance reports, student profiles, own profile
-- **Student:** _to be added_
+- **Student:** transcript with GPA, course registration (enroll and drop), graduation audit, coursework submissions and progress tracking
 - Input validation and confirmation dialogs throughout
 
 ## Installation & Setup Instructions
@@ -137,7 +137,14 @@ Only current-semester classes can be edited; past-semester classes are read-only
 
 ### Student (James Russell)
 
-_To be added._
+| Feature | Screen | Description |
+|---|---|---|
+| Review Transcript | Transcript | View every course taken, grouped by semester, with course number, name, credits, and letter grade (or "Not graded"), plus total credits and GPA. Read-only. |
+| Course Registration | Registration | See all course offers for the current semester with seats remaining. Enroll in a selected class or drop one of your own (drop asks for confirmation). Enrolling is blocked if no current semester is set, the class is full, or you are already enrolled. Credits for the semester update after each change. |
+| Graduation Audit | Graduation Audit | Compare the transcript to the degree: each core and elective course is shown as Completed or Missing/Not taken, with total credits against the 32 required, the number of electives taken, and an overall Ready / Not yet eligible result. |
+| Manage Coursework | Course Work | View current-semester classes with grade or "In progress" and the number of assignments submitted. Select a class and submit an assignment by name; each submission is time-stamped and listed in My Submissions. Blank names are rejected. |
+
+Every Student screen is reached through the Student work area, and each button is checked with `AccessGuard` before the screen opens.
 
 ## Usage Instructions
 
@@ -174,7 +181,12 @@ _To be added._
 
 ### Example scenario: Student
 
-_To be added._
+1. Log in as `adam` / `student123`.
+2. Open **Transcript**: Fall2025 shows INFO 5100 (A) and INFO 6150 (B+); Fall2026 shows INFO 6205 and INFO 6210 as Not graded.
+3. Open **Registration**, select INFO 5100 in the offered list, and click **Enroll in Selected**. It appears under My enrolled courses and the credit total goes up by 4.
+4. Select INFO 5100 in My enrolled courses and click **Drop Selected**, then confirm.
+5. Open **Graduation Audit** to see core and elective status and the credit total against 32.
+6. Open **Course Work**, select INFO 6205, click **Submit Assignment...**, enter `Homework 1`, and confirm it appears under My submissions.
 
 ## Testing Guide
 
@@ -263,7 +275,13 @@ Fall2025 is completed and graded; Fall2026 is the current semester, not graded y
 
 ### Student test cases
 
-_To be added._
+1. **Transcript:** log in as `adam` and confirm both semesters, all four courses, and the GPA appear. Log in as `jack` and confirm one ungraded Fall2026 course and a GPA of 0.00.
+2. **Registration – duplicate:** as `adam`, select INFO 6205 (already enrolled) and click Enroll. An "already enrolled" warning should appear and nothing changes.
+3. **Registration – enroll/drop:** enroll in INFO 5100, confirm the seats-left count drops by one, then drop it and confirm the seat is returned.
+4. **Registration – no selection:** click Enroll or Drop with nothing selected; a warning should appear.
+5. **Graduation Audit:** as `adam`, confirm INFO 5100 is Completed and the result is Not yet eligible (credits below 32).
+6. **Course Work:** click Submit Assignment with no class selected (warning), then select a class and submit a blank name (rejected), then submit `Homework 1` (saved and listed with a time stamp).
+7. **Authorization:** log in as `jdellon` (Faculty) and `admin` and confirm no Student screens are offered.
 
 ## Challenges & Solutions
 
@@ -299,7 +317,9 @@ _To be added._
 
 ### Student (James Russell)
 
-_To be added._
+- **Reading across two models:** the login's `StudentProfile` links to a separate academic profile in the university model. All Student screens read the transcript and course loads through `getAcademicProfile()` so they always match what Admin and Faculty see.
+- **Safe enroll and drop:** enrolling goes through `CourseOffer.assignEmptySeat`, and dropping uses `CourseLoad.dropSeatAssignment`, which releases the seat, so seat counts stay correct for everyone.
+- **Degree requirements were private:** `Degree` had no way to list its core and elective courses, so read-only getters were added for the Graduation Audit screen.
 
 ## Future Enhancements
 
@@ -318,7 +338,10 @@ _To be added._
 
 **Student**
 
-- _To be added._
+- Separate in-progress classes from completed ones in the graduation audit and credit totals.
+- A Student "My Profile" screen to update contact details and hobbies/interests.
+- Faculty-posted assignments with due dates, instead of student-named submissions.
+- Prerequisite and credit-limit checks during registration.
 
 ## Contribution Breakdown
 
@@ -363,7 +386,10 @@ _To be added._
 
 ### James Russell (Student)
 
-_To be added._
+- **Coding:** built the four Student screens (`TranscriptJPanel`, `RegistrationJPanel`, `GraduationAuditJPanel`, `CourseWorkJPanel`) and wired them into `StudentWorkAreaJPanel` behind access checks. Added coursework submission tracking to `StudentProfile` and core/elective getters to `Degree`.
+- **Testing:** tested every Student screen with the `adam`, `laura`, and `jack` accounts, including error cases.
+- **Documentation:** wrote the Student sections of this README.
+- **AI use:** the Student use case code and documentation were produced with help from Claude (AI).
 
 ## Demo and Presentation
 

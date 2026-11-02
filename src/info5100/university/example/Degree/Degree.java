@@ -31,6 +31,15 @@ public class Degree {
 
     }
 
+    //read-only copies of the requirement lists (used by the Student graduation audit)
+    public ArrayList<Course> getCoreCourses() {
+        return new ArrayList<>(corelist);
+    }
+
+    public ArrayList<Course> getElectiveCourses() {
+        return new ArrayList<>(electives);
+    }
+
     public void addElectiveCourse(Course c) {
         electives.add(c);
 
